@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { CameraType, FlashMode } from 'expo-camera/build/Camera.types';
+import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera';
-import { CameraType, FlashMode } from 'expo-camera/build/Camera.types';
+// import { Audio } from 'expo-av';
+// import * as MediaLibrary from 'expo-media-library';
 
-export default function App({navigation}:any): JSX.Element {
+const index = ({navigation}:any): JSX.Element => {
 
   const [cameraPermission, setCameraPermission] = useState<any>(false);
-  const [galleryPermission, setGalleryPermission] = useState<any>(false);
-  const [audioPermission, setAudioPermission] = useState<any>(false);
+  const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
+  const [audioPermission, setAudioPermission] = useState<boolean>(false);
   const [type, setType] = useState <CameraType>(Camera.Constants.Type.back);
   const [flash, setFlash] = useState<FlashMode>(Camera.Constants.FlashMode.on);
   const [photo, setPhoto] = useState<string>('');
@@ -19,13 +21,13 @@ export default function App({navigation}:any): JSX.Element {
       const camera = await Camera.requestCameraPermissionsAsync() ;
       setCameraPermission(camera.status === 'granted');
 
-      // check permission of audio
-      const audio = await Camera.requestCameraPermissionsAsync() ;
-      setAudioPermission(audio.status === 'granted');
+      // // check permission of audio
+      // const audio = await Camera.requestCameraPermissionsAsync() ;
+      // setAudioPermission(audio.status === 'granted');
 
-      // check permission of gallery
-      const gallery = await Camera.requestCameraPermissionsAsync() ;
-      setGalleryPermission(gallery.status === 'granted');
+      // // check permission of gallery
+      // const gallery = await Camera.requestCameraPermissionsAsync() ;
+      // setGalleryPermission(gallery.status === 'granted');
 
     })();
 
@@ -89,7 +91,14 @@ export default function App({navigation}:any): JSX.Element {
           <TouchableOpacity
             style={styles.button}
             onPress={pictures}>
-            <Text style={styles.text}> Take picture </Text>
+            <Text style={styles.text}> picture </Text>
+          </TouchableOpacity>
+
+          {/* picke a picture */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={()=>navigation.navigate('picker')}>
+            <Text style={styles.text}> picker </Text>
           </TouchableOpacity>
 
         </View>

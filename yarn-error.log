@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\irassari\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-screens@~3.8.0 react-native-safe-area-context@3.3.2
+  C:\Program Files\nodejs\node.exe C:\Users\irassari\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add expo-media-library@~13.0.3
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Program Files\Cloud Foundry;C:\Program Files\Java\jre1.8.0_291\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Ruby27-x64\bin;C:\Users\irassari\AppData\Local\Microsoft\WindowsApps;;C:\Users\irassari\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\irassari\AppData\Roaming\npm;%USERPROFILE%\AppData\Roaming\npm\
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\Users\irassari\Desktop\expo\node_modules\babel-plugin-polyfill-corejs2\node_modules\.bin'
+  Error: EPERM: operation not permitted, unlink 'C:\Users\irassari\Desktop\expo\node_modules\@react-navigation\core\node_modules\escape-string-regexp'
 
 npm manifest: 
   {
@@ -27,14 +27,21 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@react-navigation/native": "^6.0.2",
+      "@react-navigation/stack": "^5.14.9",
       "expo": "~43.0.2",
+      "expo-av": "~9.2.3",
       "expo-camera": "~12.0.3",
       "expo-image-picker": "~11.0.3",
       "expo-status-bar": "~1.1.0",
       "react": "17.0.1",
       "react-dom": "17.0.1",
       "react-native": "0.64.3",
-      "react-native-web": "0.17.1"
+      "react-native-gesture-handler": "~1.10.2",
+      "react-native-web": "0.17.1",
+      "react-native-safe-area-context": "3.2.0",
+      "react-native-screens": "~3.4.0",
+      "react-navigation": "*"
     },
     "devDependencies": {
       "@babel/core": "^7.12.9",

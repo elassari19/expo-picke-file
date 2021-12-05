@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Pressable, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
 import { Camera } from 'expo-camera';
 
 const index = ({navigation}:any): JSX.Element => {
@@ -23,6 +22,12 @@ const index = ({navigation}:any): JSX.Element => {
 
   // function for handle the image picker
   const pickImage = async (): Promise<void> => {
+     // check permission of camera
+     if(!cameraPermission){
+     const camera = await Camera.requestCameraPermissionsAsync() ;
+     setCameraPermission(camera.status === 'granted');
+    }
+
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,

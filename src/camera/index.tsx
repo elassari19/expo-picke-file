@@ -110,6 +110,8 @@ const index = ({navigation}:any): JSX.Element => {
   );
 }
 
+export default index;
+
 
 const styles = StyleSheet.create({
   container: {

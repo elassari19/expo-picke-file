@@ -110,7 +110,7 @@ const index = ({navigation}:any): JSX.Element => {
   );
 }
 
-export default index;
+export default React.memo(index);
 
 
 const styles = StyleSheet.create({

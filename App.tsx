@@ -1,14 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import Camera from './src';
+import { SafeAreaView, StyleSheet} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import { Camera, PickerFiles, Pictures} from './src';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <NavigationContainer>
       <StatusBar style="auto" />
-      <Camera />
+      <Stack.Navigator>
+        <Stack.Screen name={'camera'} component={Camera}/>
+        <Stack.Screen name={'picker'} component={PickerFiles}/>
+        <Stack.Screen name={'picture'} component={Pictures}/>
+      </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaView>
   );
 }
@@ -17,7 +27,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

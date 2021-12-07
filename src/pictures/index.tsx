@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { StackScreenProps } from '@react-navigation/stack'
 import { View, Text, Image, StyleSheet, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Permissions from 'expo-permissions';
 import * as MediaLibrary from 'expo-media-library';
-import { useNavigation } from '@react-navigation/core';
+import { Video } from 'expo-av';
 
 const index = ({route, navigation}: any) : JSX.Element => {
 
-  // save the picture or video on device
+  // save the picture/video on device
   const savePicture : (photo: string) => Promise<void> = async(photo: string) => {
     // distruct status
     const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
     // save the picture/video
     if(status === 'granted'){
-      // add photo to assets
+      // add photo/video to assets
       const asset = await MediaLibrary.createAssetAsync(photo);
       // set the pictrue to albume and save it
       MediaLibrary.createAlbumAsync('expo albume', asset)
@@ -25,10 +25,16 @@ const index = ({route, navigation}: any) : JSX.Element => {
     navigation.navigate('camera');
   }
 
+  const { video, photo } = route.params;
+
   return (
     <View style={{flex: 1}}>
         
-      <Image source={{uri: route.params.photo}} style={{flex: 1, borderWidth: 2}} />
+      {
+      video
+        ?<Video source={{uri:video}} style={{flex: 1}} useNativeControls />
+        :<Image source={{uri: photo}} style={{flex: 1}}/>
+      }
 
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 
@@ -42,7 +48,7 @@ const index = ({route, navigation}: any) : JSX.Element => {
 
         {/* save picture then back to camera screen */}
         <TouchableOpacity
-          onPress={() => savePicture(route.params.photo)}
+          onPress={() => savePicture(photo?photo:video)}
           style={styles.button}
         >
           <Text style={styles.text}>Save</Text>

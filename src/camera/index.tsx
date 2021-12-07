@@ -1,6 +1,6 @@
 import { CameraType, FlashMode } from 'expo-camera/build/Camera.types';
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, Alert } from 'react-native';
 import { Camera } from 'expo-camera';
 // import { Audio } from 'expo-av';
 // import * as MediaLibrary from 'expo-media-library';
@@ -9,10 +9,12 @@ const index = ({navigation}:any): JSX.Element => {
 
   const [cameraPermission, setCameraPermission] = useState<any>(false);
   const [galleryPermission, setGalleryPermission] = useState<boolean>(false);
+  const [record, setRecord] = useState(null);
   const [audioPermission, setAudioPermission] = useState<boolean>(false);
   const [type, setType] = useState <CameraType>(Camera.Constants.Type.back);
   const [flash, setFlash] = useState<FlashMode>(Camera.Constants.FlashMode.on);
   const [photo, setPhoto] = useState<string>('');
+  const [recording, setRecording] = useState<boolean>(false)
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -21,9 +23,9 @@ const index = ({navigation}:any): JSX.Element => {
       const camera = await Camera.requestCameraPermissionsAsync() ;
       setCameraPermission(camera.status === 'granted');
 
-      // // check permission of audio
-      // const audio = await Camera.requestCameraPermissionsAsync() ;
-      // setAudioPermission(audio.status === 'granted');
+      // check permission of audio
+      const audio = await Camera.requestCameraPermissionsAsync() ;
+      setAudioPermission(audio.status === 'granted');
 
       // // check permission of gallery
       // const gallery = await Camera.requestCameraPermissionsAsync() ;
@@ -34,10 +36,35 @@ const index = ({navigation}:any): JSX.Element => {
   }, [photo]);
 
   // take pictures
-  const pictures = async():Promise<void> =>{
+  const pictures: () => Promise<void> = async() =>{
+    // picture
     let photos = cameraPermission && await cameraPermission.takePictureAsync();
+    // save picture in state
     setPhoto(photos.uri);
+    // go to picture screen to display the photo
     navigation.navigate('picture',{photo:photos.uri})
+  }
+
+  // srart video
+  const takeVideo = async () => {
+    // is start
+    setRecording(true)
+    if(cameraPermission){// check permission
+      const options = {maxDuration: 3000*60, quality: Camera.Constants.VideoQuality['480']};
+        // RECORDING
+        const data = await cameraPermission.recordAsync(options);
+        // SAVE RECORD
+        setRecord(data.uri);
+    }
+  }
+  // end video
+  const stopVideo = async () => {
+    // IS END
+    setRecording(false);
+    // STOP RECORDING
+    cameraPermission.stopRecording();
+    // GO TO DISPLAY RECORD
+    navigation.navigate('picture',{video:record})
   }
 
   // no camera on device
@@ -59,6 +86,7 @@ const index = ({navigation}:any): JSX.Element => {
         ratio={'16:9'}
       >
 
+        {/* handle camera type/flash/pick picture */}
         <View style={styles.buttonContainer}>
 
           {/* handle front or back camera */}
@@ -87,6 +115,18 @@ const index = ({navigation}:any): JSX.Element => {
             <Text style={styles.text}> Flash {flash} </Text>
           </TouchableOpacity>
 
+          {/* picke a picture */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={()=>navigation.navigate('picker')}>
+            <Text style={styles.text}> picker </Text>
+          </TouchableOpacity>
+
+        </View>
+
+        {/* handle events take picture/recording video */}
+        <View style={styles.buttonContainer}>
+          
           {/* take a picture */}
           <TouchableOpacity
             style={styles.button}
@@ -94,11 +134,18 @@ const index = ({navigation}:any): JSX.Element => {
             <Text style={styles.text}> picture </Text>
           </TouchableOpacity>
 
-          {/* picke a picture */}
+          {/* recording a video */}
           <TouchableOpacity
-            style={styles.button}
-            onPress={()=>navigation.navigate('picker')}>
-            <Text style={styles.text}> picker </Text>
+            style={[styles.button,{backgroundColor: recording?'#f00':'#0f0'}]}
+            onPress={takeVideo}>
+            <Text style={styles.text}> play </Text>
+          </TouchableOpacity>
+
+          {/* recording a video */}
+          <TouchableOpacity
+            style={[styles.button,{backgroundColor: recording?'#f00':'#0f0'}]}
+            onPress={stopVideo}>
+            <Text style={styles.text}> stop </Text>
           </TouchableOpacity>
 
         </View>
@@ -121,7 +168,6 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     width: '100%',
-    zIndex: 10,
   },
   buttonContainer: {
     justifyContent: 'space-between',
@@ -130,7 +176,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     color: '#d00',
     padding: 10,
-    top: Dimensions.get('window').height - 150,
+    top: Dimensions.get('window').height - 200,
   },
   button: {
     flex: 1,

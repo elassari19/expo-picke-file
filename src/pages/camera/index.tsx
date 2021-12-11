@@ -28,8 +28,8 @@ const index = ({navigation}:any): JSX.Element => {
       setAudioPermission(audio.status === 'granted');
 
       // // check permission of gallery
-      // const gallery = await Camera.requestCameraPermissionsAsync() ;
-      // setGalleryPermission(gallery.status === 'granted');
+      const gallery = await Camera.requestCameraPermissionsAsync() ;
+      setGalleryPermission(gallery.status === 'granted');
 
     })();
 
@@ -49,14 +49,16 @@ const index = ({navigation}:any): JSX.Element => {
   const takeVideo = async () => {
     // is start
     setRecording(true)
+    // let data : object;
     if(cameraPermission){// check permission
       const options = {maxDuration: 3000*60, quality: Camera.Constants.VideoQuality['480']};
         // RECORDING
-        const data = await cameraPermission.recordAsync(options);
+        let data = await cameraPermission.recordAsync(options);
         // SAVE RECORD
         setRecord(data.uri);
     }
   }
+
   // end video
   const stopVideo = async () => {
     // IS END
@@ -99,7 +101,7 @@ const index = ({navigation}:any): JSX.Element => {
                   : Camera.Constants.Type.back
               );
             }}>
-            <Text style={styles.text}> Flip </Text>
+            <Text style={styles.text} testID='flip'> Flip </Text>
           </TouchableOpacity>
 
           {/* handle flash of camera */}
@@ -160,7 +162,7 @@ const index = ({navigation}:any): JSX.Element => {
 export default React.memo(index);
 
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%'

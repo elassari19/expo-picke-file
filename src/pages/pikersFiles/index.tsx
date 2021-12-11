@@ -15,7 +15,6 @@ const index = ({navigation}:any): JSX.Element => {
       // check permission of camera
       const camera = await Camera.requestCameraPermissionsAsync() ;
       setCameraPermission(camera.status === 'granted');
-
     })();
 
   }, []);

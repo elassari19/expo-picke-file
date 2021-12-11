@@ -1,4 +1,5 @@
 {
   "liveFrame.title": "expo",
-  "liveFrame.url": "http://localhost:19006/"
+  "liveFrame.url": "http://localhost:19006/",
+  "editor.formatOnSave": true
 }
